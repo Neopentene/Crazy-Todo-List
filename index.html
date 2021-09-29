@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="JavaScript/comp-control.js"></script>
+    <script src="JavaScript/comp-features.js"></script>
+    <link rel="stylesheet" href="Styles/common-styles.css" />
+    <link rel="stylesheet" href="Styles/targetted-styles.css" />
+    <link rel="stylesheet" href="Styles/animations.css" />
+    <link rel="stylesheet" href="Styles/media-queries.css" />
+    <!--
+    <style>
+      * {
+        font-family: Tahoma;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      ::selection {
+        background: hsl(180, 100%, 40%);
+        color: hsl(14, 75%, 35%);
+      }
+
+      .m-p-0 {
+        margin: 0;
+        padding: 0;
+      }
+
+      .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .sticky {
+        position: sticky;
+      }
+
+      .fixed {
+        position: fixed;
+      }
+
+      .bot-shadow {
+        box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+      }
+
+      .shadow {
+        box-shadow: 0px 3px 8px 2px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 0px 3px 8px 2px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0px 3px 8px 2px rgba(0, 0, 0, 0.25);
+      }
+
+      .head {
+        margin-bottom: 1rem;
+        padding-left: 1.75rem;
+        top: 0;
+        background-color: whitesmoke;
+        z-index: 999;
+      }
+
+      .head > h1 {
+        font-family: monospace;
+      }
+
+      .m-25 {
+        margin: 0.25rem;
+      }
+
+      .m-50 {
+        margin: 0.5rem;
+      }
+
+      .m-75 {
+        margin: 0.75rem;
+      }
+
+      .p-25 {
+        padding: 0.25rem;
+      }
+
+      .p-50 {
+        padding: 0.5rem;
+      }
+
+      .p-75 {
+        padding: 0.75rem;
+      }
+
+      .simple-btn {
+        border: 0.08rem solid hsl(180, 100%, 40%);
+        background-color: transparent;
+        outline: none;
+        cursor: pointer;
+        color: hsl(180, 100%, 40%);
+      }
+
+      .simple-btn:active,
+      .simple-btn:hover {
+        outline: none !important;
+      }
+
+      .h-w-250 {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      .circle {
+        border-radius: 50%;
+      }
+
+      .rounded-edge {
+        border-radius: 0.25rem;
+      }
+
+      .tooltip {
+        display: inline-block;
+        position: relative;
+        text-align: center;
+      }
+
+      .tooltip .top {
+        min-width: 10rem;
+        top: -20px;
+        left: 50%;
+        transform: translate(-50%, -100%);
+        padding: 10px 20px;
+        color: hsl(14, 20%, 70%);
+        background-color: hsl(14, 75%, 35%);
+        font-weight: normal;
+        font-size: 13px;
+        border-radius: 8px;
+        position: absolute;
+        z-index: 9999;
+        box-sizing: border-box;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.8s;
+      }
+
+      .tooltip:hover .top {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .tooltip .top i {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -12px;
+        width: 24px;
+        height: 12px;
+        overflow: hidden;
+      }
+
+      .tooltip .top i::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+        background-color: hsl(14, 75%, 35%);
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      .simple-btn.circle.tooltip:hover .top {
+        z-index: -1;
+        opacity: 0;
+      }
+
+      .simple-btn.circle.tooltip .top {
+        min-width: max-content;
+        height: min-content;
+        transition: opacity 0.8s, z-index 0.8s;
+      }
+
+      .simple-btn.circle.tooltip:active .top {
+        transition-delay: 0.5s;
+        opacity: 1;
+        z-index: 9999;
+      }
+
+      .simple-btn:hover {
+        border-color: hsl(14, 75%, 25%);
+      }
+
+      .cls-1 {
+        fill: #0e6ae0;
+      }
+
+      .cls-2 {
+        fill: #d8e1ef;
+      }
+
+      .cls-3 {
+        fill: #0593ff;
+      }
+
+      .simple-btn.circle:hover .cls-1 {
+        fill: hsl(14, 75%, 35%);
+      }
+
+      .simple-btn.circle:hover .cls-3 {
+        fill: hsl(14, 75%, 25%);
+      }
+
+      .simple-btn.circle:hover .cls-2 {
+        fill: hsl(14, 20%, 70%);
+      }
+
+      .simple-btn.circle:hover .bin {
+        fill: hsl(14, 75%, 35%);
+      }
+
+      .simple-btn.circle:hover .complete {
+        stroke: hsl(14, 75%, 35%);
+      }
+
+      .simple-btn.circle:hover .pencil {
+        fill: hsl(14, 75%, 35%);
+      }
+      .simple-btn:hover {
+        color: hsl(14, 75%, 35%);
+      }
+
+      .pencil {
+        fill: hsl(180, 100%, 40%);
+      }
+
+      .bin {
+        fill: hsl(180, 100%, 40%);
+      }
+
+      .complete {
+        stroke: hsl(180, 100%, 40%);
+      }
+
+      .simple-btn-fab {
+        width: 3rem;
+        height: 3rem;
+        outline: none;
+        border: none;
+        background-color: hsl(180, 100%, 40%);
+        cursor: pointer;
+      }
+
+      .FabWrapper {
+        width: max-content;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .simple-btn-fab:hover {
+        outline: none !important;
+        background-color: hsl(14, 75%, 35%);
+      }
+
+      .simple-btn-fab:active {
+        outline: none;
+        background-color: hsl(14, 75%, 25%);
+        box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.25);
+      }
+
+      .search-bar {
+        outline: none;
+        max-width: 25rem;
+        width: 70%;
+        height: 1rem;
+        border: 0.1rem solid hsl(180, 100%, 40%);
+        font-size: 0.9rem;
+        font-family: Tahoma;
+      }
+
+      .search-bar:hover {
+        border-color: hsl(14, 75%, 35%);
+      }
+
+      .search-bar:focus {
+        border-color: hsl(14, 75%, 25%);
+      }
+
+      .Todo {
+        max-width: 40rem;
+        width: 70%;
+        justify-content: space-around;
+        border: 2px solid transparent;
+      }
+
+      .Todo > p {
+        max-width: 25rem;
+        max-height: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: auto;
+        margin: auto;
+        color: hsl(14, 75%, 35%);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .Todo:hover > p {
+        color: hsl(14, 75%, 25%);
+      }
+
+      .u-select-n {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      #TodoWrapper {
+        padding-bottom: 4rem;
+      }
+
+      .Todo:hover {
+        background-color: hsl(14, 45%, 65%);
+      }
+
+      .Todo:hover .simple-btn.circle:not(:hover) {
+        border-color: hsl(0, 0%, 100%);
+      }
+
+      .Todo:hover .simple-btn.circle:not(:hover) .bin,
+      .Todo:hover .simple-btn.circle:not(:hover) .pencil {
+        fill: hsl(0, 0%, 100%);
+      }
+
+      .Todo:hover .simple-btn.circle:not(:hover) .complete {
+        stroke: hsl(0, 0%, 100%);
+      }
+
+      .column {
+        flex-direction: column;
+      }
+
+      .row {
+        flex-direction: row;
+      }
+
+      .wrap {
+        flex-wrap: wrap;
+      }
+
+      .pop-up-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: hsla(14, 75%, 25%, 0.1);
+        z-index: 9999;
+      }
+
+      #todo-details {
+        margin: 0 auto;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        max-width: 80%;
+        background-color: hsl(0, 0%, 100%);
+      }
+
+      #todo-details > h2 {
+        color: hsl(14, 75%, 35%);
+      }
+
+      #todo-details > fieldset {
+        max-width: 90%;
+        border-radius: 0.25rem;
+        border-color: hsl(14, 45%, 65%);
+      }
+
+      #todo-details > fieldset > legend {
+        margin: 0 auto;
+        padding: 0 0.5rem;
+        color: hsl(14, 45%, 65%);
+      }
+
+      #todo-details > fieldset > p {
+        color: hsl(14, 75%, 35%);
+      }
+
+      #create-todo,
+      #edit-todo {
+        margin: 0 auto;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        max-width: 50%;
+        text-align: left;
+        background-color: hsl(0, 0%, 100%);
+      }
+
+      #create-todo > h2,
+      #edit-todo > h2 {
+        color: hsl(14, 75%, 35%);
+      }
+
+      #create-todo > textarea,
+      #edit-todo > textarea {
+        max-width: 30rem;
+        width: 90%;
+        min-height: 1rem;
+        outline: none;
+        resize: none;
+        overflow: hidden;
+        border: 0.1rem solid hsl(180, 100%, 40%);
+      }
+
+      #create-todo > textarea:hover,
+      #edit-todo > textarea:hover {
+        border-color: hsl(14, 75%, 35%);
+      }
+
+      #create-todo > textarea:hover,
+      #edit-todo > textarea:hover {
+        border-color: hsl(14, 75%, 25%);
+      }
+
+      #create-todo > label,
+      #edit-todo > label {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      #create-todo > div > .simple-btn-fab,
+      #edit-todo > div > .simple-btn-fab {
+        margin-top: 2rem;
+      }
+
+      #TodoWrapper > h2 {
+        color: hsl(14, 75%, 35%);
+      }
+
+      .todo-complete {
+        border-color: hsl(120, 80%, 40%);
+      }
+
+      .todo-complete .complete {
+        stroke: hsl(120, 80%, 40%);
+      }
+
+      @media (orientation: portrait) {
+        #create-todo,
+        #edit-todo {
+          margin-top: 10%;
+          max-width: 80%;
+        }
+      }
+    </style>
+
+    <style>
+      .fade-from-top {
+        overflow-y: auto;
+        animation-name: fade-from-top;
+        animation-timing-function: ease-out;
+        animation-duration: 250ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes fade-from-top {
+        from {
+          overflow-y: hidden;
+          bottom: 100%;
+        }
+        99% {
+          overflow-y: hidden;
+        }
+        to {
+          overflow-y: auto;
+          bottom: 0;
+        }
+      }
+
+      .fade-from-bottom {
+        animation-name: fade-from-bottom;
+        animation-timing-function: ease-in;
+        animation-duration: 250ms;
+        animation-delay: 250ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        opacity: 1;
+      }
+
+      @keyframes fade-from-bottom {
+        from {
+          overflow-y: auto;
+          bottom: 0;
+        }
+        1% {
+          overflow-y: hidden;
+        }
+        to {
+          overflow-y: hidden;
+          bottom: 100%;
+        }
+      }
+
+      .fade-in {
+        animation-name: fade-in;
+        animation-timing-function: ease-in;
+        animation-duration: 250ms;
+        animation-delay: 250ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        opacity: 0;
+      }
+
+      @keyframes fade-in {
+        from {
+          visibility: hidden;
+          opacity: 0;
+        }
+        to {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+
+      .fade-in-div {
+        animation-name: fade-in;
+        animation-timing-function: ease-in;
+        animation-duration: 250ms;
+        animation-delay: 600ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        opacity: 0;
+      }
+
+      .fade-out {
+        animation-name: fade-out;
+        animation-timing-function: ease-in;
+        animation-duration: 250ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        opacity: 1;
+      }
+
+      @keyframes fade-out {
+        from {
+          visibility: visible;
+          opacity: 1;
+        }
+        to {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+      .fade-out-div {
+        animation-name: fade-out;
+        animation-timing-function: ease-in;
+        animation-duration: 250ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        opacity: 0;
+      }
+    </style>
+    -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+
+  <body class="m-p-0">
+    <header class="sticky head bot-shadow p-75">
+      <h1 class="m-p-0">Todo List</h1>
+    </header>
+    <div class="center wrap row">
+      <input
+        type="text"
+        name="search-bar"
+        id="search-bar"
+        class="search-bar rounded-edge bot-shadow m-50 p-50"
+        placeholder="Search Title"
+      />
+      <button
+        class="h-w-250 simple-btn circle center bot-shadow m-50 p-25"
+        title="Search"
+        id="Search"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          preserveAspectRatio="xMidYMid meet"
+          width="100%"
+          height="100%"
+        >
+          <g>
+            <path
+              class="cls-1"
+              d="M22,23a1,1,0,0,1-.71-.29l-1.93-1.93a1,1,0,0,1,1.42-1.42l1.93,1.93a1,1,0,0,1,0,1.42A1,1,0,0,1,22,23Z"
+            />
+            <path
+              class="cls-2"
+              d="M13,24A11,11,0,1,1,24,13,11,11,0,0,1,13,24ZM13,4a9,9,0,1,0,9,9A9,9,0,0,0,13,4Z"
+            />
+            <path
+              class="cls-3"
+              d="M28.21,23.79l-3.5-3.5a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,0,1.42l3.5,3.5a3.14,3.14,0,0,0,4.42,0A3.14,3.14,0,0,0,28.21,23.79Z"
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <div id="TodoWrapper" class="center row wrap m-50"></div>
+    <div id="FabWrapper" class="FabWrapper center row m-50">
+      <button
+        id="New Todo"
+        class="simple-btn-fab circle shadow tooltip p-75 m-75"
+        title="Add new task"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          viewBox="0 0 256 256"
+          xml:space="preserve"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g transform="translate(128 128) scale(0.72 0.72)">
+            <g
+              style="
+                stroke: none;
+                stroke-width: 0;
+                stroke-dasharray: none;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+                stroke-miterlimit: 10;
+                fill: none;
+                fill-rule: nonzero;
+                opacity: 1;
+              "
+              transform="translate(-175.05 -175.05000000000004) scale(3.89 3.89)"
+            >
+              <path
+                d="M 86.5 41.5 h -38 v -38 C 48.5 1.567 46.933 0 45 0 c -1.933 0 -3.5 1.567 -3.5 3.5 v 38 h -38 C 1.567 41.5 0 43.067 0 45 s 1.567 3.5 3.5 3.5 h 38 v 38 c 0 1.933 1.567 3.5 3.5 3.5 c 1.933 0 3.5 -1.567 3.5 -3.5 v -38 h 38 c 1.933 0 3.5 -1.567 3.5 -3.5 S 88.433 41.5 86.5 41.5 z"
+                style="
+                  stroke: none;
+                  stroke-width: 1;
+                  stroke-dasharray: none;
+                  stroke-linecap: butt;
+                  stroke-linejoin: miter;
+                  stroke-miterlimit: 10;
+                  fill: hsl(0, 0%, 100%);
+                  fill-rule: nonzero;
+                  opacity: 1;
+                "
+                transform=" matrix(1 0 0 1 0 0) "
+                stroke-linecap="round"
+              />
+            </g>
+          </g>
+        </svg>
+        <div class="top">
+          <h3>Press to add a new task</h3>
+          <i></i>
+        </div>
+      </button>
+      <button id="Back" class="simple-btn-fab circle shadow tooltip p-75 m-75">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          id="Capa_1"
+          x="0px"
+          y="0px"
+          viewBox="0 0 384.97 384.97"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path
+            d="M192.485,0C86.185,0,0,86.185,0,192.485C0,298.797,86.173,384.97,192.485,384.97S384.97,298.797,384.97,192.485    C384.97,86.185,298.797,0,192.485,0z M192.485,361.282c-92.874,0-168.424-75.923-168.424-168.797S99.611,24.061,192.485,24.061    s168.424,75.55,168.424,168.424S285.359,361.282,192.485,361.282z"
+            style="fill: hsl(0, 0%, 100%)"
+          />
+          <path
+            d="M235.878,99.876c-4.704-4.74-12.319-4.74-17.011,0l-83.009,84.2c-4.572,4.62-4.584,12.56,0,17.191l82.997,84.2    c4.704,4.74,12.319,4.74,17.011,0c4.704-4.752,4.704-12.439,0-17.191l-74.528-75.61l74.54-75.61    C240.57,112.315,240.57,104.628,235.878,99.876z"
+            style="fill: hsl(0, 0%, 100%)"
+          />
+        </svg>
+        <div class="top">
+          <h3>Clear Search</h3>
+          <i></i>
+        </div>
+      </button>
+    </div>
+    <div id="todo-details-wrapper" class="pop-up-wrapper" style="display: none">
+      <div
+        id="todo-details"
+        class="center column rounded-edge bot-shadow p-75 m-50"
+      >
+        <h2>Task Details</h2>
+        <fieldset>
+          <legend>Title</legend>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
+            repellendus laborum voluptas, libero voluptate tempora porro
+            aspernatur voluptatibus deleniti ullam!
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Description</legend>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda,
+            vitae molestiae eveniet quo ex soluta consequatur aspernatur iure
+            delectus minima, repellat quia, tempore ullam. Laudantium sit vitae
+            vel ullam mollitia laborum in cumque harum suscipit inventore!
+            Expedita quibusdam voluptate dolor laudantium ipsa. At consequatur
+            libero animi, eligendi ratione aperiam cum!
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Status</legend>
+          <p>Lorem, ipsum.</p>
+        </fieldset>
+      </div>
+    </div>
+
+    <div
+      id="create-edit-todo-wrapper"
+      class="pop-up-wrapper"
+      style="display: none"
+    >
+      <div
+        id="create-edit-todo"
+        class="center column rounded-edge bot-shadow p-75 m-50"
+      >
+        <h2>Add Task</h2>
+        <label for="title-todo" class="m-50">Title</label>
+        <textarea
+          type="text"
+          id="title-todo"
+          class="rounded-edge p-50"
+          placeholder="Add Title"
+          rows="1"
+          oninput="growTextArea(this, 1)"
+        ></textarea>
+        <label for="description-todo" class="m-50">Description</label>
+        <textarea
+          type="text"
+          id="description-todo"
+          class="rounded-edge p-50"
+          placeholder="Add Description"
+          rows="5"
+          oninput="growTextArea(this, 5)"
+        ></textarea>
+      </div>
+    </div>
+  </body>
+</html>

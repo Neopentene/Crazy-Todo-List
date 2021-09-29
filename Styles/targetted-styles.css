@@ -1,0 +1,80 @@
+#todo-details {
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  max-width: 80%;
+  background-color: hsl(0, 0%, 100%);
+}
+
+#todo-details > h2 {
+  color: hsl(14, 75%, 35%);
+}
+
+#todo-details > fieldset {
+  max-width: 90%;
+  border-radius: 0.25rem;
+  border-color: hsl(14, 45%, 65%);
+}
+
+#todo-details > fieldset > legend {
+  margin: 0 auto;
+  padding: 0 0.5rem;
+  color: hsl(14, 45%, 65%);
+}
+
+#todo-details > fieldset > p {
+  color: hsl(14, 75%, 35%);
+}
+
+#create-todo,
+#edit-todo {
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  max-width: 50%;
+  text-align: left;
+  background-color: hsl(0, 0%, 100%);
+}
+
+#create-todo > h2,
+#edit-todo > h2 {
+  color: hsl(14, 75%, 35%);
+}
+
+#create-todo > textarea,
+#edit-todo > textarea {
+  max-width: 30rem;
+  width: 90%;
+  min-height: 1rem;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  border: 0.1rem solid hsl(180, 100%, 40%);
+}
+
+#create-todo > textarea:hover,
+#edit-todo > textarea:hover {
+  border-color: hsl(14, 75%, 35%);
+}
+
+#create-todo > textarea:hover,
+#edit-todo > textarea:hover {
+  border-color: hsl(14, 75%, 25%);
+}
+
+#create-todo > label,
+#edit-todo > label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#create-todo > div > .simple-btn-fab,
+#edit-todo > div > .simple-btn-fab {
+  margin-top: 2rem;
+}
+
+#TodoWrapper > h2 {
+  color: hsl(14, 75%, 35%);
+}

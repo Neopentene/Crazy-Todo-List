@@ -1,0 +1,7 @@
+@media (orientation: portrait) {
+  #create-todo,
+  #edit-todo {
+    margin-top: 10%;
+    max-width: 80%;
+  }
+}

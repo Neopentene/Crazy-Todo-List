@@ -1,0 +1,105 @@
+.fade-from-top {
+  overflow-y: auto;
+  animation-name: fade-from-top;
+  animation-timing-function: ease-out;
+  animation-duration: 250ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-from-top {
+  from {
+    overflow-y: hidden;
+    bottom: 100%;
+  }
+  99% {
+    overflow-y: hidden;
+  }
+  to {
+    overflow-y: auto;
+    bottom: 0;
+  }
+}
+
+.fade-from-bottom {
+  animation-name: fade-from-bottom;
+  animation-timing-function: ease-in;
+  animation-duration: 250ms;
+  animation-delay: 250ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  opacity: 1;
+}
+
+@keyframes fade-from-bottom {
+  from {
+    overflow-y: auto;
+    bottom: 0;
+  }
+  1% {
+    overflow-y: hidden;
+  }
+  to {
+    overflow-y: hidden;
+    bottom: 100%;
+  }
+}
+
+.fade-in {
+  animation-name: fade-in;
+  animation-timing-function: ease-in;
+  animation-duration: 250ms;
+  animation-delay: 250ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fade-in {
+  from {
+    visibility: hidden;
+    opacity: 0;
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.fade-in-div {
+  animation-name: fade-in;
+  animation-timing-function: ease-in;
+  animation-duration: 250ms;
+  animation-delay: 600ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.fade-out {
+  animation-name: fade-out;
+  animation-timing-function: ease-in;
+  animation-duration: 250ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  opacity: 1;
+}
+
+@keyframes fade-out {
+  from {
+    visibility: visible;
+    opacity: 1;
+  }
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+.fade-out-div {
+  animation-name: fade-out;
+  animation-timing-function: ease-in;
+  animation-duration: 250ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
