@@ -11,7 +11,9 @@
 }
 
 #todo-details > fieldset {
+  display: inline-block;
   max-width: 90%;
+  width: 90%;
   border-radius: 0.25rem;
   border-color: hsl(14, 45%, 65%);
 }
@@ -22,7 +24,12 @@
   color: hsl(14, 45%, 65%);
 }
 
+#todo-details > .simple-btn-fab {
+  margin-top: 2rem;
+}
+
 #todo-details > fieldset > p {
+  word-break: break-all;
   color: hsl(14, 75%, 35%);
 }
 
@@ -57,9 +64,10 @@
   border-color: hsl(14, 75%, 35%);
 }
 
-#create-todo > textarea:hover,
-#edit-todo > textarea:hover {
+#create-todo > textarea:focus,
+#edit-todo > textarea:focus {
   border-color: hsl(14, 75%, 25%);
+  box-shadow: 0 0 0 0.15rem hsla(14, 75%, 25%, 0.2);
 }
 
 #create-todo > label,
@@ -77,4 +85,17 @@
 
 #TodoWrapper > h2 {
   color: hsl(14, 75%, 35%);
+}
+
+#filter-btn {
+  width: 4.25rem;
+  height: 1.5rem;
+  color: hsl(14, 45%, 65%);
+  border: 2px solid hsl(14, 45%, 65%);
+  justify-content: left;
+  cursor: pointer;
+}
+
+#filter-btn .filter-svg {
+  fill: hsl(14, 45%, 65%);
 }

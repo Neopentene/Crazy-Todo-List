@@ -4,8 +4,8 @@
 }
 
 ::selection {
-  background: hsl(180, 100%, 40%);
-  color: hsl(14, 75%, 35%);
+  background: hsl(14, 45%, 65%);
+  color: hsl(14, 75%, 25%);
 }
 
 .m-p-0 {
@@ -73,6 +73,10 @@
 
 .p-75 {
   padding: 0.75rem;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .simple-btn {
@@ -346,9 +350,52 @@
 }
 
 .todo-complete {
-  border-color: hsl(120, 80%, 40%);
+  background-color: hsl(120, 80%, 40%);
 }
 
-.todo-complete .complete {
-  stroke: hsl(120, 80%, 40%);
+.todo-complete > p {
+  color: hsl(0, 0%, 100%);
+}
+
+.todo-complete:hover {
+  background-color: hsl(120, 70%, 35%);
+}
+
+.todo-complete:hover > p {
+  color: hsl(0, 0%, 100%);
+}
+
+.todo-complete .simple-btn.circle:not(:hover) {
+  border-color: hsl(0, 0%, 100%);
+}
+
+.todo-complete .simple-btn.circle:not(:hover) .bin,
+.todo-complete .simple-btn.circle:not(:hover) .pencil {
+  fill: hsl(0, 0%, 100%);
+}
+
+.todo-complete .simple-btn.circle:not(:hover) .complete {
+  stroke: hsl(0, 0%, 100%);
+}
+
+.todo-complete .simple-btn.circle:hover {
+  border-color: hsl(15, 35%, 70%);
+}
+
+.todo-complete .simple-btn.circle:hover .bin,
+.todo-complete .simple-btn.circle:hover .pencil {
+  fill: hsl(15, 35%, 70%);
+}
+
+.todo-complete .simple-btn.circle:hover .complete {
+  stroke: hsl(15, 35%, 70%);
+}
+
+.todo-complete .simple-btn.circle.tooltip .top {
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(14, 25%, 45%);
+}
+
+.todo-complete .simple-btn.circle.tooltip .top i::after {
+  background-color: hsl(14, 25%, 45%);
 }
