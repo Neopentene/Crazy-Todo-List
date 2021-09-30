@@ -36,6 +36,16 @@ function updateTodo(Todo, newTitle, newDescription) {
     localStorage.setItem(Todo.id.toString(), JSON.stringify({ title: newTitle, description: newDescription, status: Todo.status }));
     return getTodoDiv(Todo.id.toString(), newTitle, Todo.status);
 }
+function filter(by) {
+    if (by == "date-newest") {
+    }
+    if (by == "date-oldest") {
+    }
+    if (by == "complete-first") {
+    }
+    if (by == "incomplete-first") {
+    }
+}
 function matchTodoSearches(expression) {
 }
 function singleLineOnly(text) {
@@ -43,6 +53,11 @@ function singleLineOnly(text) {
         text = text.split("\n")[0].trim() + "...";
     }
     return text;
+}
+function getTextAreaHeight(element, height) {
+    var remUnits = parseInt(getComputedStyle(document.documentElement).fontSize);
+    element.style.height = "auto";
+    return element.scrollHeight + height - remUnits + "px";
 }
 function getBackSVG() {
     return ' \
@@ -274,16 +289,17 @@ function getDeleteButton(id) {
     button.addEventListener('click', function () {
         var buttonParent = this.parentElement;
         localStorage.removeItem(id.split("-")[1]);
-        buttonParent.classList.remove("fade-in-div");
-        buttonParent.classList.add("fade-out-div");
+        buttonParent.parentElement.classList.remove("fade-in-div");
+        buttonParent.parentElement.classList.add("fade-out-div");
         setTimeout(function () {
             if (!newUser && localStorage.length == 0) {
                 var h2 = document.createElement('h2');
+                h2.className = "text-center";
                 h2.innerHTML = "Please add a Task";
-                buttonParent.parentElement.appendChild(h2);
+                buttonParent.parentElement.parentElement.appendChild(h2);
                 newUser = true;
             }
-            buttonParent.parentElement.removeChild(buttonParent);
+            buttonParent.parentElement.parentElement.removeChild(buttonParent.parentElement);
         }, 300);
     });
     button.title = "Delete";
@@ -296,38 +312,78 @@ function getEditButton(id) {
     button.innerHTML = getPencilSVG();
     button.id = id;
     button.addEventListener('click', function () {
-        document.body.appendChild(pop_Up_Edit_Task(parseInt(id.split("-")[1]), this.parentElement));
+        document.body.style.overflow = "hidden";
+        document.body.appendChild(pop_Up_Edit_Task(parseInt(id.split("-")[1]), this.parentElement.parentElement));
     });
     button.title = "Edit";
     button.appendChild(getTooltipDiv("Edit"));
     return button;
 }
-function getCheckButton(id) {
+function getCheckButton(id, status) {
     var button = document.createElement('button');
+    var tooltip = getTooltipDiv("");
     button.className = "h-w-250 simple-btn circle center tooltip bot-shadow m-25 p-50";
     button.innerHTML = getCheckBoxSVG();
     button.id = id;
-    button.title = "Mark Done";
-    button.appendChild(getTooltipDiv("Mark Done"));
+    if (status == "Complete") {
+        button.title = "Mark Complete";
+        tooltip.getElementsByTagName('h3')[0].innerHTML = "Mark Incomplete";
+        button.appendChild(tooltip);
+    }
+    else {
+        button.title = "Mark Complete";
+        tooltip.getElementsByTagName('h3')[0].innerHTML = "Mark Complete";
+        button.appendChild(tooltip);
+    }
+    button.addEventListener('click', function () {
+        var Todo = getTodo(parseInt(id.split('-')[1]));
+        if (Todo.status == "Complete") {
+            document.getElementById(Todo.id.toString()).classList.remove("todo-complete");
+            Todo.status = "Incomplete";
+            updateTodo(Todo, Todo.title, Todo.description);
+            tooltip.getElementsByTagName('h3')[0].innerHTML = "Mark Complete";
+        }
+        else {
+            document.getElementById(Todo.id.toString()).classList.add("todo-complete");
+            Todo.status = "Complete";
+            updateTodo(Todo, Todo.title, Todo.description);
+            tooltip.getElementsByTagName('h3')[0].innerHTML = "Mark Incomplete";
+        }
+    });
     return button;
 }
 function getTodoDiv(id, title, status) {
     if (status === void 0) { status = "Incomplete"; }
     var div = document.createElement('div');
+    var buttonWrapper = document.createElement('div');
     var p = document.createElement('p');
     p.innerHTML = singleLineOnly(title);
     div.className = "Todo center rounded-edge bot-shadow row wrap m-50 p-50 fade-in-div";
+    if (status == "Complete") {
+        div.classList.add("todo-complete");
+    }
     div.id = id;
     div.appendChild(p);
-    div.appendChild(getCheckButton("check-" + id));
-    div.appendChild(getEditButton("edit-" + id));
-    div.appendChild(getDeleteButton("delete-" + id));
+    buttonWrapper.className = "center row wrap";
+    buttonWrapper.appendChild(getCheckButton("check-" + id, status));
+    buttonWrapper.appendChild(getEditButton("edit-" + id));
+    buttonWrapper.appendChild(getDeleteButton("delete-" + id));
+    div.appendChild(buttonWrapper);
+    div.addEventListener('click', function (event) {
+        if (event.target != this && event.target != p)
+            return;
+        document.body.style.overflow = "hidden";
+        document.body.appendChild(pop_Up_Todo_Details(getTodo(parseInt(id))));
+    });
     setTimeout(function () {
         div.classList.remove("fade-in-div");
     }, 850);
     return div;
 }
-function getAllTodoDivs() {
+function getAllTodoDivs(TodoArray) {
+    if (TodoArray === void 0) { TodoArray = []; }
+    if (TodoArray.length != 0) {
+    }
     var todoDivArray = [];
     var allTodos = getAllTodos();
     for (var todoNumber = 0; todoNumber < allTodos.length; todoNumber++) {
@@ -349,7 +405,7 @@ function pop_Up_Edit_Task(id, oldTodoDiv) {
     wrapper.id = "pop-up-wrapper";
     div.id = "create-todo";
     div.className = "center column rounded-edge bot-shadow p-75 m-50 fade-in";
-    h2.innerHTML = "Add Task";
+    h2.innerHTML = "Edit Task";
     titleLabel.htmlFor = "edit-title-input";
     titleLabel.className = "m-50";
     titleLabel.innerHTML = "Title";
@@ -396,7 +452,8 @@ function pop_Up_Edit_Task(id, oldTodoDiv) {
             }, 500);
         }
     });
-    buttonWrapper.childNodes[1].addEventListener('click', function () {
+    buttonWrapper.childNodes[1].addEventListener('click', function (event) {
+        event.preventDefault();
         document.body.style.overflow = "auto";
         div.classList.remove("fade-in");
         div.classList.add("fade-out");
@@ -419,6 +476,10 @@ function pop_Up_Edit_Task(id, oldTodoDiv) {
             wrapper.parentElement.removeChild(wrapper);
         }, 500);
     });
+    setTimeout(function () {
+        titleInput.setAttribute('style', 'height: ' + getTextAreaHeight(titleInput, 1));
+        descriptionInput.setAttribute('style', 'height: ' + getTextAreaHeight(descriptionInput, 5));
+    }, 250);
     wrapper.appendChild(div);
     return wrapper;
 }
@@ -509,11 +570,78 @@ function pop_Up_Add_New_Task() {
     wrapper.appendChild(div);
     return wrapper;
 }
+function pop_Up_Todo_Details(Todo) {
+    var wrapper = document.createElement('div');
+    var div = document.createElement('div');
+    var h2 = document.createElement('h2');
+    var fabButton = getBackFabButton("close-window", "Close Window");
+    var fieldsetWrapperTitle = document.createElement('fieldset'), fieldsetWrapperDescription = document.createElement('fieldset'), fieldsetWrapperDate = document.createElement('fieldset'), fieldsetWrapperStatus = document.createElement('fieldset');
+    var legendWrapperTitle = document.createElement('legend'), legendWrapperDescription = document.createElement('legend'), legendWrapperDate = document.createElement('legend'), legendWrapperStatus = document.createElement('legend');
+    var pWrapperTitle = document.createElement('p'), pWrapperDescription = document.createElement('p'), pWrapperDate = document.createElement('p'), pWrapperStatus = document.createElement('p');
+    wrapper.id = "todo-details-wrapper";
+    wrapper.className = "pop-up-wrapper fade-from-top";
+    div.id = "todo-details";
+    div.className = "center column rounded-edge bot-shadow p-75 m-50 fade-in";
+    h2.className = "text-center";
+    h2.innerHTML = "Task Details";
+    pWrapperTitle.innerHTML = Todo.title.replace(/\n/g, "<br />");
+    pWrapperTitle.className = "text-center";
+    pWrapperDescription.innerHTML = Todo.description.replace(/\n/g, "<br />");
+    pWrapperDescription.className = "text-center";
+    var date = new Date(Todo.id);
+    pWrapperDate.innerHTML = date.toDateString() + " at " + date.toLocaleTimeString();
+    pWrapperDate.className = "text-center";
+    pWrapperStatus.innerHTML = Todo.status;
+    pWrapperStatus.className = "text-center";
+    legendWrapperTitle.innerHTML = "Title";
+    legendWrapperDescription.innerHTML = "Description";
+    legendWrapperDate.innerHTML = "Date";
+    legendWrapperStatus.innerHTML = "Status";
+    fieldsetWrapperTitle.appendChild(legendWrapperTitle);
+    fieldsetWrapperTitle.appendChild(pWrapperTitle);
+    fieldsetWrapperDescription.appendChild(legendWrapperDescription);
+    fieldsetWrapperDescription.appendChild(pWrapperDescription);
+    fieldsetWrapperDate.appendChild(legendWrapperDate);
+    fieldsetWrapperDate.appendChild(pWrapperDate);
+    fieldsetWrapperStatus.appendChild(legendWrapperStatus);
+    fieldsetWrapperStatus.appendChild(pWrapperStatus);
+    fabButton.addEventListener('click', function () {
+        document.body.style.overflow = "auto";
+        div.classList.remove("fade-in");
+        div.classList.add("fade-out");
+        wrapper.classList.remove("fade-from-top");
+        wrapper.classList.add("fade-from-bottom");
+        setTimeout(function () {
+            wrapper.parentElement.removeChild(wrapper);
+        }, 500);
+    });
+    div.appendChild(h2);
+    div.appendChild(fieldsetWrapperTitle);
+    div.appendChild(fieldsetWrapperDescription);
+    div.appendChild(fieldsetWrapperDate);
+    div.appendChild(fieldsetWrapperStatus);
+    div.appendChild(fabButton);
+    wrapper.addEventListener('click', function (event) {
+        if (event.target != this)
+            return;
+        document.body.style.overflow = "auto";
+        div.classList.remove("fade-in");
+        div.classList.add("fade-out");
+        wrapper.classList.remove("fade-from-top");
+        wrapper.classList.add("fade-from-bottom");
+        setTimeout(function () {
+            wrapper.parentElement.removeChild(wrapper);
+        }, 500);
+    });
+    wrapper.appendChild(div);
+    return wrapper;
+}
 function loadTodos() {
     var TodoList = getAllTodoDivs();
     var TodoWrapper = document.getElementById("TodoWrapper");
     if (TodoList.length == 0) {
         var h2 = document.createElement('h2');
+        h2.className = "text-center";
         h2.innerHTML = "Please add a Task";
         TodoWrapper.appendChild(h2);
     }
@@ -526,6 +654,12 @@ function loadTodos() {
 }
 window.onload = function () {
     loadTodos();
+    console.log(document.cookie);
+    document.getElementById("Back").addEventListener('click', function () {
+        if (document.cookie == "")
+            document.cookie = "date-newest";
+        console.log(document.cookie);
+    });
     document.getElementById("New Todo").addEventListener('click', function () {
         var self = this;
         function classList() {
