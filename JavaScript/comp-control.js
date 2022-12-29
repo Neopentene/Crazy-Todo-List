@@ -10,13 +10,47 @@ var Todo = /** @class */ (function () {
     }
     return Todo;
 }());
+function setSessionTdoFilter(filterBy) {
+    sessionStorage.setItem("filter", filterBy);
+}
+function getSessionTodoFilter() {
+    return (sessionStorage.getItem("filter") == null) ? "date-newest" : sessionStorage.getItem("filter");
+}
 function addNewTodo(Todo) {
-    localStorage.setItem(Todo.id.toString(), JSON.stringify({ title: Todo.title, description: Todo.description, status: Todo.status }));
+    localStorage.setItem(Todo.id.toString() + "-todo", JSON.stringify({ title: Todo.title, description: Todo.description, status: Todo.status }));
     return getTodoDiv(Todo.id.toString(), Todo.title);
+}
+function insertionSort(sortedTodo, sortBy) {
+    if (sortBy === void 0) { sortBy = "date-newest"; }
+    var j = 0;
+    if (sortBy == "date-newest") {
+        for (var i = 1; i < sortedTodo.length; i++) {
+            var key = sortedTodo[i];
+            console.log(sortedTodo[i].id);
+            for (j = i - 1; j >= 0 && sortedTodo[j].id < key.id; j--) {
+                console.log("In sort: ", sortedTodo[j].id);
+                sortedTodo[j + 1] = sortedTodo[j];
+            }
+            sortedTodo[j + 1] = key;
+        }
+    }
+    else {
+        for (var i = 1; i < sortedTodo.length; i++) {
+            var key = sortedTodo[i];
+            console.log(sortedTodo[i].id);
+            for (j = i - 1; j >= 0 && sortedTodo[j].id > key.id; j--) {
+                console.log("In sort: ", sortedTodo[j].id);
+                sortedTodo[j + 1] = sortedTodo[j];
+            }
+            sortedTodo[j + 1] = key;
+        }
+    }
+    console.log(sortedTodo);
+    return sortedTodo;
 }
 function getTodo(id) {
     try {
-        var TodoData = JSON.parse(localStorage.getItem(id.toString()));
+        var TodoData = JSON.parse(localStorage.getItem(id.toString() + "-todo"));
         var newTodo = new Todo(TodoData.title, TodoData.description, TodoData.status, id);
         return newTodo;
     }
@@ -26,24 +60,79 @@ function getTodo(id) {
     }
 }
 function getAllTodos() {
+    var _a;
     var TodoArray = [];
     for (var todoNumber = 0; todoNumber < localStorage.length; todoNumber++) {
-        TodoArray.push(getTodo(parseInt(localStorage.key(todoNumber))));
+        var key = localStorage.key(todoNumber);
+        if (/[\d]+-todo/.test(key)) {
+            TodoArray.push(getTodo(parseInt((_a = localStorage.key(todoNumber)) === null || _a === void 0 ? void 0 : _a.replace("-todo", ""))));
+        }
     }
     return TodoArray;
 }
-function updateTodo(Todo, newTitle, newDescription) {
-    localStorage.setItem(Todo.id.toString(), JSON.stringify({ title: newTitle, description: newDescription, status: Todo.status }));
+function searchByTitle(searchString) {
+    var TodoArray = filterTodo(getSessionTodoFilter());
+    console.log(TodoArray, getSessionTodoFilter());
+    var searchList = [];
+    var Regex = RegExp(searchString);
+    for (var todoNumber in TodoArray) {
+        console.log(Regex.test(TodoArray[todoNumber].title));
+        if (Regex.test(TodoArray[todoNumber].title)) {
+            searchList.push(TodoArray[todoNumber]);
+        }
+    }
+    if (searchList.length == 0) {
+        return false;
+    }
+    return searchList;
+}
+function updateTodo(Todo, newTitle, newDescription, returnTodoDiv) {
+    if (returnTodoDiv === void 0) { returnTodoDiv = true; }
+    localStorage.setItem(Todo.id.toString() + "-todo", JSON.stringify({ title: newTitle, description: newDescription, status: Todo.status }));
     return getTodoDiv(Todo.id.toString(), newTitle, Todo.status);
 }
-function filter(by) {
+function filterTodo(by) {
+    var TodoArray = [];
+    console.log(by);
     if (by == "date-newest") {
+        return insertionSort(getAllTodos());
     }
-    if (by == "date-oldest") {
+    else if (by == "date-oldest") {
+        return insertionSort(getAllTodos(), by);
     }
     if (by == "complete-first") {
+        TodoArray = insertionSort(getAllTodos(), "date-newest");
+        var completedTodo = [], incompleteTodo = [], mergedTodo = [];
+        for (var todoNumber in TodoArray) {
+            if (TodoArray[todoNumber].status == "Complete") {
+                completedTodo.push(TodoArray[todoNumber]);
+            }
+            else {
+                incompleteTodo.push(TodoArray[todoNumber]);
+            }
+        }
+        mergedTodo.push.apply(mergedTodo, completedTodo);
+        mergedTodo.push.apply(mergedTodo, incompleteTodo);
+        mergedTodo.concat(completedTodo, incompleteTodo);
+        console.log(mergedTodo, completedTodo, incompleteTodo);
+        return mergedTodo;
     }
     if (by == "incomplete-first") {
+        TodoArray = insertionSort(getAllTodos(), "date-newest");
+        var completedTodo = [], incompleteTodo = [], mergedTodo = [];
+        for (var todoNumber in TodoArray) {
+            if (TodoArray[todoNumber].status == "Complete") {
+                completedTodo.push(TodoArray[todoNumber]);
+            }
+            else {
+                incompleteTodo.push(TodoArray[todoNumber]);
+            }
+        }
+        mergedTodo.push.apply(mergedTodo, incompleteTodo);
+        mergedTodo.push.apply(mergedTodo, completedTodo);
+        mergedTodo.concat(incompleteTodo, completedTodo);
+        console.log(mergedTodo, completedTodo, incompleteTodo);
+        return mergedTodo;
     }
 }
 function matchTodoSearches(expression) {
@@ -337,14 +426,21 @@ function getCheckButton(id, status) {
     }
     button.addEventListener('click', function () {
         var Todo = getTodo(parseInt(id.split('-')[1]));
+        var myParent = document.getElementById(Todo.id.toString());
         if (Todo.status == "Complete") {
-            document.getElementById(Todo.id.toString()).classList.remove("todo-complete");
+            myParent.style.transition = "1000ms";
+            button.blur();
+            setTimeout(function () { myParent.style.transition = "500ms"; }, 1000);
+            myParent.classList.remove("todo-complete");
             Todo.status = "Incomplete";
             updateTodo(Todo, Todo.title, Todo.description);
             tooltip.getElementsByTagName('h3')[0].innerHTML = "Mark Complete";
         }
         else {
-            document.getElementById(Todo.id.toString()).classList.add("todo-complete");
+            myParent.style.transition = "1000ms";
+            button.blur();
+            setTimeout(function () { myParent.style.transition = "500ms"; }, 1000);
+            myParent.classList.add("todo-complete");
             Todo.status = "Complete";
             updateTodo(Todo, Todo.title, Todo.description);
             tooltip.getElementsByTagName('h3')[0].innerHTML = "Mark Incomplete";
@@ -354,7 +450,7 @@ function getCheckButton(id, status) {
 }
 function getTodoDiv(id, title, status) {
     if (status === void 0) { status = "Incomplete"; }
-    var div = document.createElement('div');
+    var div = document.createElement('button');
     var buttonWrapper = document.createElement('div');
     var p = document.createElement('p');
     p.innerHTML = singleLineOnly(title);
@@ -364,6 +460,10 @@ function getTodoDiv(id, title, status) {
     }
     div.id = id;
     div.appendChild(p);
+    /*
+    div.setAttribute("tabindex", "0");
+    div.setAttribute("role", "button");
+    */
     buttonWrapper.className = "center row wrap";
     buttonWrapper.appendChild(getCheckButton("check-" + id, status));
     buttonWrapper.appendChild(getEditButton("edit-" + id));
@@ -382,12 +482,10 @@ function getTodoDiv(id, title, status) {
 }
 function getAllTodoDivs(TodoArray) {
     if (TodoArray === void 0) { TodoArray = []; }
-    if (TodoArray.length != 0) {
-    }
     var todoDivArray = [];
     var allTodos = getAllTodos();
     for (var todoNumber = 0; todoNumber < allTodos.length; todoNumber++) {
-        todoDivArray.push(getTodoDiv(allTodos[todoNumber].id, allTodos[todoNumber].title, allTodos[todoNumber].status));
+        todoDivArray.push(getTodoDiv(allTodos[todoNumber].id.toString(), allTodos[todoNumber].title, allTodos[todoNumber].status));
     }
     return todoDivArray;
 }
@@ -532,7 +630,7 @@ function pop_Up_Add_New_Task() {
                 TodoWrapper.removeChild(TodoWrapper.firstChild);
                 newUser = false;
             }
-            TodoWrapper.appendChild(addNewTodo(new Todo(titleInput.value.trim(), descriptionInput.value.trim())));
+            TodoWrapper.insertBefore(addNewTodo(new Todo(titleInput.value.trim(), descriptionInput.value.trim())), TodoWrapper.firstChild);
             div.classList.add("fade-out");
             div.classList.add("fade-out");
             wrapper.classList.remove("fade-from-top");
@@ -605,6 +703,11 @@ function pop_Up_Todo_Details(Todo) {
     fieldsetWrapperDate.appendChild(pWrapperDate);
     fieldsetWrapperStatus.appendChild(legendWrapperStatus);
     fieldsetWrapperStatus.appendChild(pWrapperStatus);
+    setTimeout(function () {
+        fabButton.focus({
+            preventScroll: true
+        });
+    }, 600);
     fabButton.addEventListener('click', function () {
         document.body.style.overflow = "auto";
         div.classList.remove("fade-in");
@@ -636,6 +739,30 @@ function pop_Up_Todo_Details(Todo) {
     wrapper.appendChild(div);
     return wrapper;
 }
+function loadTodosOneByOne(todoArray) {
+    if (todoArray === void 0) { todoArray = null; }
+    var TodoArray = (todoArray == null) ? filterTodo(getSessionTodoFilter()) : todoArray, count = 0;
+    var TodoWrapper = document.getElementById("TodoWrapper");
+    TodoWrapper.innerHTML = '';
+    if (TodoArray.length == 0) {
+        var h2 = document.createElement('h2');
+        h2.className = "text-center";
+        h2.innerHTML = "Please add a Task";
+        TodoWrapper.appendChild(h2);
+    }
+    else {
+        var timeout_1 = setInterval(function () {
+            var todoDiv = getTodoDiv(TodoArray[count].id.toString(), TodoArray[count].title, TodoArray[count].status);
+            TodoWrapper.appendChild(todoDiv);
+            count++;
+            if (count >= TodoArray.length) {
+                newUser = false;
+                clearInterval(timeout_1);
+                return;
+            }
+        }, 150);
+    }
+}
 function loadTodos() {
     var TodoList = getAllTodoDivs();
     var TodoWrapper = document.getElementById("TodoWrapper");
@@ -646,31 +773,36 @@ function loadTodos() {
         TodoWrapper.appendChild(h2);
     }
     else {
-        for (var todoNumber = 0; todoNumber < TodoList.length; todoNumber++) {
+        /*
+        for (let todoNumber = 0; todoNumber < TodoList.length; todoNumber++) {
+
             TodoWrapper.appendChild(TodoList[todoNumber]);
         }
+        */
+        var todoNumber_1 = 0;
+        var appender_1 = setInterval(function () {
+            TodoWrapper.appendChild(TodoList[todoNumber_1]);
+            todoNumber_1++;
+            if (todoNumber_1 >= TodoList.length) {
+                clearInterval(appender_1);
+            }
+        }, 600);
         newUser = false;
     }
 }
 window.onload = function () {
-    loadTodos();
-    console.log(document.cookie);
+    //loadTodos();
+    loadTodosOneByOne();
     document.getElementById("Back").addEventListener('click', function () {
-        if (document.cookie == "")
-            document.cookie = "date-newest";
-        console.log(document.cookie);
+        loadTodosOneByOne();
+    });
+    document.getElementById("Search").addEventListener('click', function () {
+        var searchString = document.getElementById("search-bar").value;
+        var searchResult = searchByTitle(searchString);
+        console.log(searchResult, searchString);
     });
     document.getElementById("New Todo").addEventListener('click', function () {
-        var self = this;
-        function classList() {
-            var list;
-            for (var i = 0; i < self.classList.length; i++) {
-                list += self.classList[i] + '\n';
-            }
-            return list;
-        }
         document.body.style.overflow = "hidden";
         document.body.appendChild(pop_Up_Add_New_Task());
     });
-    console.log(getAllTodos());
 };
