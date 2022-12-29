@@ -377,7 +377,7 @@ function getDeleteButton(id) {
     button.id = id;
     button.addEventListener('click', function () {
         var buttonParent = this.parentElement;
-        localStorage.removeItem(id.split("-")[1]);
+        localStorage.removeItem(id.split("-")[1] + "-todo");
         buttonParent.parentElement.classList.remove("fade-in-div");
         buttonParent.parentElement.classList.add("fade-out-div");
         setTimeout(function () {
