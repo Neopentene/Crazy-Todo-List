@@ -3,3 +3,7 @@ function growTextArea(element, height) {
     element.style.height = height + "rem";
     element.style.height = element.scrollHeight - remUnits + "px";
 }
+function checkRadio(radio) {
+    radio.checked;
+    sessionStorage.setItem("filter", radio.value);
+}
