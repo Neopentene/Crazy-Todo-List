@@ -53,6 +53,7 @@
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   opacity: 0;
+  visibility: hidden;
 }
 
 @keyframes fade-in {
@@ -74,6 +75,7 @@
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   opacity: 0;
+  visibility: hidden;
 }
 
 .fade-out {

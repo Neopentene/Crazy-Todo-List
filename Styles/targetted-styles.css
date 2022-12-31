@@ -87,15 +87,46 @@
   color: hsl(14, 75%, 35%);
 }
 
-#filter-btn {
-  width: 4.25rem;
-  height: 1.5rem;
-  color: hsl(14, 45%, 65%);
-  border: 2px solid hsl(14, 45%, 65%);
-  justify-content: left;
-  cursor: pointer;
+#filter-btn-wrapper {
+  overflow: hidden;
 }
 
-#filter-btn .filter-svg {
-  fill: hsl(14, 45%, 65%);
+#filter-btn-wrapper:hover {
+  overflow: visible;
+}
+
+#filter-btn {
+  height: 100%;
+  position: relative;
+  max-height: 2rem;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+#filter-btn > svg {
+  transition: all 500ms;
+}
+
+#filter-btn:hover svg,
+#filter-btn:focus svg {
+  transform: rotate(-180deg) scale(1.075);
+}
+
+#filter-btn > div {
+  position: absolute;
+  width: 10rem;
+  background-color: hsl(0, 0%, 100%);
+  top: 20%;
+  right: 20%;
+  z-index: 9999;
+  cursor: auto;
+  opacity: 0;
+}
+
+#filter-btn:hover > div,
+#filter-btn:focus > div {
+  top: 110%;
+  opacity: 1;
+  transition: all 500ms;
 }

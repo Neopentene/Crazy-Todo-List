@@ -1,6 +1,7 @@
 * {
   font-family: Tahoma;
   -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 ::selection {
@@ -19,12 +20,24 @@
   align-items: center;
 }
 
+.d-flex {
+  display: flex;
+}
+
 .sticky {
   position: sticky;
 }
 
 .fixed {
   position: fixed;
+}
+
+.fl-9 {
+  flex: 0.9;
+}
+
+.fl-1 {
+  flex: 0.1;
 }
 
 .bot-shadow {
@@ -42,6 +55,7 @@
 .head {
   margin-bottom: 1rem;
   padding-left: 1.75rem;
+  max-height: 2rem;
   top: 0;
   background-color: whitesmoke;
   z-index: 999;
@@ -129,7 +143,7 @@
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.8s;
-  transition-delay: 2s;
+  transition-delay: 1s;
 }
 
 .tooltip:hover .top {
@@ -175,7 +189,8 @@
   z-index: 9999;
 }
 
-.simple-btn:hover {
+.simple-btn:hover,
+.simple-btn:focus {
   border-color: hsl(14, 75%, 25%);
 }
 
@@ -191,29 +206,36 @@
   fill: #0593ff;
 }
 
-.simple-btn.circle:hover .cls-1 {
+.simple-btn.circle:hover .cls-1,
+.simple-btn.circle:focus .cls-1 {
   fill: hsl(14, 75%, 35%);
 }
 
-.simple-btn.circle:hover .cls-3 {
+.simple-btn.circle:hover .cls-3,
+.simple-btn.circle:focus .cls-3 {
   fill: hsl(14, 75%, 25%);
 }
 
-.simple-btn.circle:hover .cls-2 {
+.simple-btn.circle:hover .cls-2,
+.simple-btn.circle:focus .cls-2 {
   fill: hsl(14, 20%, 70%);
 }
 
-.simple-btn.circle:hover .bin {
+.simple-btn.circle:hover .bin,
+.simple-btn.circle:focus .bin {
   fill: hsl(14, 75%, 35%);
 }
 
-.simple-btn.circle:hover .complete {
+.simple-btn.circle:hover .complete,
+.simple-btn.circle:focus .complete {
   stroke: hsl(14, 75%, 35%);
 }
 
-.simple-btn.circle:hover .pencil {
+.simple-btn.circle:hover .pencil,
+.simple-btn.circle:focus .pencil {
   fill: hsl(14, 75%, 35%);
 }
+.simple-btn:hover,
 .simple-btn:hover {
   color: hsl(14, 75%, 35%);
 }
@@ -247,7 +269,8 @@
   transform: translateX(-50%);
 }
 
-.simple-btn-fab:hover {
+.simple-btn-fab:hover,
+.simple-btn-fab:focus {
   outline: none !important;
   background-color: hsl(14, 75%, 35%);
 }
@@ -281,8 +304,14 @@
 .Todo {
   max-width: 40rem;
   width: 70%;
+  background-color: hsl(0, 0%, 100%);
   justify-content: space-around;
   border: 2px solid transparent;
+  transition: all 500ms;
+}
+
+.Todo:hover > p {
+  transition: all 500ms;
 }
 
 .Todo > p {
@@ -291,6 +320,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: Tahoma;
+  font-size: 1rem;
   padding: auto;
   margin: auto;
   color: hsl(14, 75%, 35%);
@@ -300,7 +331,8 @@
   user-select: none;
 }
 
-.Todo:hover > p {
+.Todo:hover > p,
+.Todo:focus > p {
   color: hsl(14, 75%, 25%);
 }
 
@@ -311,20 +343,25 @@
   user-select: none;
 }
 
-.Todo:hover {
+.Todo:hover,
+.Todo:focus {
   background-color: hsl(14, 45%, 65%);
 }
 
-.Todo:hover .simple-btn.circle:not(:hover) {
+.Todo:hover .simple-btn.circle:not(:hover),
+.Todo:focus .simple-btn.circle:not(:hover) {
   border-color: hsl(0, 0%, 100%);
 }
 
 .Todo:hover .simple-btn.circle:not(:hover) .bin,
-.Todo:hover .simple-btn.circle:not(:hover) .pencil {
+.Todo:hover .simple-btn.circle:not(:hover) .pencil,
+.Todo:focus .simple-btn.circle:not(:hover) .bin,
+.Todo:focus .simple-btn.circle:not(:hover) .pencil {
   fill: hsl(0, 0%, 100%);
 }
 
-.Todo:hover .simple-btn.circle:not(:hover) .complete {
+.Todo:hover .simple-btn.circle:not(:hover) .complete,
+.Todo:focus .simple-btn.circle:not(:hover) .complete {
   stroke: hsl(0, 0%, 100%);
 }
 
@@ -351,45 +388,65 @@
 }
 
 .todo-complete {
-  background-color: hsl(120, 80%, 40%);
+  background-color: hsl(90, 100%, 70%);
 }
 
 .todo-complete > p {
-  color: hsl(0, 0%, 100%);
+  color: hsl(291, 19%, 21%);
+  color: hsl(253, 22%, 41%);
+  color: hsl(14, 75%, 25%);
 }
 
-.todo-complete:hover {
-  background-color: hsl(120, 70%, 35%);
+.todo-complete:hover,
+.todo-complete:focus {
+  background-color: hsl(90, 80%, 45%);
 }
 
-.todo-complete:hover > p {
-  color: hsl(0, 0%, 100%);
+.todo-complete:hover > p,
+.todo-complete:focus > p {
+  color: hsl(291, 19%, 21%);
+  color: hsl(253, 22%, 41%);
+  color: hsl(270, 50%, 40%);
+  color: hsl(14, 75%, 25%);
 }
 
 .todo-complete .simple-btn.circle:not(:hover) {
-  border-color: hsl(0, 0%, 100%);
+  border-color: hsl(291, 19%, 21%);
+  border-color: hsl(253, 22%, 41%);
+  border-color: hsl(270, 50%, 40%);
+  border-color: hsl(14, 40%, 45%);
 }
 
 .todo-complete .simple-btn.circle:not(:hover) .bin,
 .todo-complete .simple-btn.circle:not(:hover) .pencil {
-  fill: hsl(0, 0%, 100%);
+  fill: hsl(291, 19%, 21%);
+  fill: hsl(253, 22%, 41%);
+  fill: hsl(270, 50%, 40%);
+  fill: hsl(14, 40%, 45%);
 }
 
 .todo-complete .simple-btn.circle:not(:hover) .complete {
-  stroke: hsl(0, 0%, 100%);
+  stroke: hsl(291, 19%, 21%);
+  stroke: hsl(253, 22%, 41%);
+  stroke: hsl(270, 50%, 40%);
+  stroke: hsl(14, 40%, 45%);
 }
 
-.todo-complete .simple-btn.circle:hover {
-  border-color: hsl(15, 35%, 70%);
+.todo-complete .simple-btn.circle:hover,
+.todo-complete .simple-btn.circle:focus {
+  border-color: hsl(270, 50%, 40%);
 }
 
 .todo-complete .simple-btn.circle:hover .bin,
-.todo-complete .simple-btn.circle:hover .pencil {
-  fill: hsl(15, 35%, 70%);
+.todo-complete .simple-btn.circle:hover .pencil,
+.todo-complete .simple-btn.circle:focus .bin,
+.todo-complete .simple-btn.circle:focus .pencil {
+  fill: hsl(270, 50%, 40%);
 }
 
-.todo-complete .simple-btn.circle:hover .complete {
-  stroke: hsl(15, 35%, 70%);
+.todo-complete .simple-btn.circle:hover .complete,
+.todo-complete .simple-btn.circle:focus .complete {
+  stroke: hsl(270, 50%, 40%);
 }
 
 .todo-complete .simple-btn.circle.tooltip .top {
@@ -399,4 +456,34 @@
 
 .todo-complete .simple-btn.circle.tooltip .top i::after {
   background-color: hsl(14, 25%, 45%);
+}
+
+.hr-line {
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 0.25px solid hsl(253, 22%, 41%);
+}
+
+.pointer-point > * {
+  cursor: pointer;
+}
+
+.simple-btn-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(253, 22%, 41%);
+}
+
+.simple-btn-dropdown:hover {
+  background-color: hsl(253, 22%, 41%);
+  color: hsl(0, 0%, 100%);
+}
+
+.simple-btn-dropdown:active {
+  background-color: hsl(253, 22%, 35%);
+  color: hsl(0, 0%, 100%);
 }
