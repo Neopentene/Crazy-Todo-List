@@ -736,8 +736,8 @@ function pop_Up_Todo_Details(Todo) {
             wrapper.parentElement.removeChild(wrapper);
         }, 500);
     });
-    wrapper.addEventListener('keypress', function (event) {
-        if (event.code != '27')
+    wrapper.onkeydown = function (event) {
+        if (event.key != 'Escape')
             return;
         document.body.style.overflow = "auto";
         div.classList.remove("fade-in");
@@ -747,7 +747,7 @@ function pop_Up_Todo_Details(Todo) {
         setTimeout(function () {
             wrapper.parentElement.removeChild(wrapper);
         }, 500);
-    });
+    };
     wrapper.appendChild(div);
     return wrapper;
 }
