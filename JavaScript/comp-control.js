@@ -736,6 +736,18 @@ function pop_Up_Todo_Details(Todo) {
             wrapper.parentElement.removeChild(wrapper);
         }, 500);
     });
+    wrapper.addEventListener('keypress', function (event) {
+        if (event.code != '27')
+            return;
+        document.body.style.overflow = "auto";
+        div.classList.remove("fade-in");
+        div.classList.add("fade-out");
+        wrapper.classList.remove("fade-from-top");
+        wrapper.classList.add("fade-from-bottom");
+        setTimeout(function () {
+            wrapper.parentElement.removeChild(wrapper);
+        }, 500);
+    });
     wrapper.appendChild(div);
     return wrapper;
 }
